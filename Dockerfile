@@ -45,8 +45,8 @@ RUN a2enmod pagespeed
 
 # Configure Django project
 RUN mkdir django_app
-WORKDIR /django_apps
-ADD ./files/requirements.txt /django_apps/${DJANGO_APP_NAME}/requirements.txt
+WORKDIR /django_app
+ADD ./files/requirements.txt /django_app/${DJANGO_APP_NAME}/requirements.txt
 RUN pip install -r ${DJANGO_APP_NAME}/requirements.txt
 #RUN django-admin startproject ${DJANGO_APP_NAME}
 
@@ -71,7 +71,7 @@ RUN chmod ug+x /init.sh
 RUN apt-get clean \
     apt-get autoremove
 
-VOLUME ["/django_apps"]
+VOLUME ["/django_app"]
 
 
 # Expose ports
