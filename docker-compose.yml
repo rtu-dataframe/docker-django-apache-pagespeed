@@ -1,0 +1,32 @@
+version: '2'
+apache:
+  image: simonefardella/django-apache-pagespeed
+  container_name: django-apache-pagespeed
+  ports:
+    - 8000:80
+  volumes:
+    - /mnt/django_app/:/django_app
+  restart: always
+
+mariadb:
+  image: mariadb
+  container_name: mariadb
+  restart: always
+  volumes:
+    - /mnt/mariadb/:/var/lib/mysql/
+  environment:
+    MYSQL_ROOT_PASSWORD: password
+    MYSQL_USER: utente
+    MYSQL_PASSWORD: password
+    MYSQL_DATABASE: database
+
+phpmyadmin:
+  image: phpmyadmin/phpmyadmin
+  container_name: phpmyadmin
+  links:
+    - mariadb:db
+  restart: always
+  ports:
+    - 8001:80
+  environment:
+    VIRTUAL_HOST: phpmyadmin.local.it
