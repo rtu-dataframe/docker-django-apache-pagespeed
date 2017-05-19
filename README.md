@@ -1,1 +1,1 @@
-# django-apache--mariadb-pagespeed-docker
+# django-apache--mysql-pagespeed-docker

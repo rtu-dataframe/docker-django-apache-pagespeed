@@ -4,10 +4,12 @@ services:
     image: simonefardella/django-apache-pagespeed
     container_name: django-apache-pagespeed
     ports:
-      - 8000:80
+      - 80:80
     volumes:
-      - /mnt/django_app/:/django_app
+      - /mnt/django_app/:/django_app/
     restart: always
+    environment:
+      VIRTUAL_HOST: djangoapp.local.net
   mysql:
     image: mysql
     container_name: mysql
@@ -21,7 +23,6 @@ services:
       MYSQL_USER: utente
       MYSQL_PASSWORD: password
       MYSQL_DATABASE: database
-
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
@@ -31,6 +32,6 @@ services:
       - mysql:db
     restart: always
     ports:
-      - 8001:80
+      - 81:80
     environment:
       VIRTUAL_HOST: phpmyadmin.local.it
