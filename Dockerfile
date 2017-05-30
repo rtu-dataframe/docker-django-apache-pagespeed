@@ -1,9 +1,11 @@
 FROM ubuntu:latest
 
-ARG DJANGO_APP_NAME=django_helloworld
+ARG DJANGO_APP_NAME=django_app
 
 # Set terminal to be noninteractive
 ENV DEBIAN_FRONTEND noninteractive
+# Sets the terminal type
+ENV TERM xterm
 
 # Install packages
 RUN apt-get update && apt-get install -y \
@@ -31,9 +33,8 @@ RUN a2enmod deflate
 RUN a2enmod expires
 RUN a2enmod headers
 
-# Configure Server-Info/Server-Status Apache Webpage (on 000-default.conf)
-ADD ./files/000-default.conf /etc/apache2/sites-enabled/000-default.conf
-RUN a2ensite 000-default.conf
+# Disable the default website
+RUN a2dissite 000-default.conf
 
 
 #Installing and configuring mod_pagespeed
@@ -54,8 +55,8 @@ RUN pip install -r ${DJANGO_APP_NAME}/requirements.txt
 #RUN sed -i -e "s/ALLOWED_HOSTS = \[\]/ALLOWED_HOSTS = \[\'*\'\]/" /django_app/${DJANGO_APP_NAME}/${DJANGO_APP_NAME}/settings.py
 
 #Django Apache configuration
-ADD ./files/django_helloworld.conf /etc/apache2/sites-available/django_helloworld.conf
-#RUN mv /etc/apache2/sites-available/django_helloworld.conf /etc/apache2/sites-available/${DJANGO_APP_NAME}.conf
+ADD ./files/django_app.conf /etc/apache2/sites-available/django_app.conf
+#RUN mv /etc/apache2/sites-available/django_app.conf /etc/apache2/sites-available/${DJANGO_APP_NAME}.conf
 RUN a2ensite ${DJANGO_APP_NAME}
 
 #Testing Apache configuration
@@ -75,7 +76,7 @@ VOLUME ["/django_app"]
 
 
 # Expose ports
-# 80 = Apache
+# 80: Apache
 EXPOSE 80
 
 # Run Apache
